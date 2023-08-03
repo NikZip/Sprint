@@ -8,12 +8,12 @@ class PerevalAddModel(models.Model):
         ('accepted', 'accepted'),
         ('rejected', 'rejected'),
     )
-    beauty_title = models.CharField(max_length=10)
+    beauty_title = models.CharField(max_length=50)
     title = models.CharField(max_length=50)
     other_titles = models.CharField(max_length=50)
     connect = models.CharField(max_length=100)
 
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='new')
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='new')
     time_created = models.DateTimeField(auto_now_add=True)
     time_moderated = models.DateTimeField(blank=True, null=True)
 
@@ -56,7 +56,7 @@ class PerevalImageModel(models.Model):
 
 class PerevalUser(models.Model):
     email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=11, unique=True)
+    phone = models.CharField(max_length=15, unique=True)
     fam = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     otc = models.CharField(max_length=255)

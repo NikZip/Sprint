@@ -1,4 +1,3 @@
-import json
 from abc import ABC, abstractmethod
 from ..models import *
 
@@ -36,7 +35,6 @@ class PerevalRepositoryDjango(PerevalRepositoryInterface):
     @staticmethod
     def _add_images(images_data, pereval):
         for image_data in images_data:
-            print(type(image_data['data']))
             PerevalImageModel.objects.create(
                 pereval=pereval,
                 image=str.encode(image_data['data']),  # Я не понял почему он преобразуется в str
@@ -71,4 +69,5 @@ class PerevalRepositoryDjango(PerevalRepositoryInterface):
         self._add_images(pereval_data['images'], pereval)
 
         return pereval.pk
+
 
