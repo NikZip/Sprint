@@ -1,6 +1,7 @@
 import pytest
 from base64 import b64encode
 from rest_framework.test import APIClient
+from ..utils import PerevalRepositoryDjango
 
 
 def _get_encoded_image_encode(image_path):
@@ -12,6 +13,12 @@ def _get_encoded_image_encode(image_path):
 
 
 @pytest.fixture
+def populate_db(test_post_values):
+    repository = PerevalRepositoryDjango()
+    repository.add_pereval(test_post_values)
+
+
+@pytest.fixture()
 def api_client():
     client = APIClient()
     return client
@@ -27,7 +34,6 @@ def test_post_values():
         "title": "Прокова",
         "other_titles": "Триев",
         "connect": "",
-        "add_time": "2021-09-22 13:18:13",
         "user": {"email": "qwerty@mail.ru",
                  "fam": "Пупкин",
                  "name": "Василий",
@@ -48,14 +54,3 @@ def test_post_values():
     }
     return json_values
 
-
-@pytest.fixture
-def test_post_values_without_secondary_info():
-    json_values = {
-        "beauty_title": "пер. ",
-        "title": "Прокова",
-        "other_titles": "Триев",
-        "connect": "",
-        "add_time": "2021-09-22 13:18:13",
-    }
-    return json_values
