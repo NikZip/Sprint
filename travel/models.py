@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import QuerySet
 
 
 class PerevalAddModel(models.Model):
@@ -18,13 +19,26 @@ class PerevalAddModel(models.Model):
     time_moderated = models.DateTimeField(blank=True, null=True)
 
     created_by = models.ForeignKey('PerevalUser', on_delete=models.SET_DEFAULT, default=None, null=True)
+    coords = models.ForeignKey('CoordsModel', on_delete=models.CASCADE)
+    level = models.ForeignKey('PerevalLevelsModel', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'pereval_added'
 
+    def get_user(self) -> 'PerevalUser':
+        return self.created_by
+
+    def get_coords(self) -> 'CoordsModel':
+        return self.coords
+
+    def get_level(self) -> 'PerevalLevelsModel':
+        return self.level
+
+    def get_images(self) -> 'QuerySet[PerevalImageModel]':
+        return self.images.select_related().all().order_by('id')
+
 
 class CoordsModel(models.Model):
-    pereval = models.ForeignKey(PerevalAddModel, on_delete=models.CASCADE)
     latitude = models.DecimalField(max_digits=9, decimal_places=4)
     longitude = models.DecimalField(max_digits=9, decimal_places=4)
     height = models.DecimalField(max_digits=9, decimal_places=4)
@@ -34,7 +48,6 @@ class CoordsModel(models.Model):
 
 
 class PerevalLevelsModel(models.Model):
-    pereval = models.ForeignKey(PerevalAddModel, on_delete=models.CASCADE)
     winter = models.CharField(max_length=10)
     summer = models.CharField(max_length=10)
     autumn = models.CharField(max_length=10)
@@ -45,10 +58,10 @@ class PerevalLevelsModel(models.Model):
 
 
 class PerevalImageModel(models.Model):
-    pereval = models.ForeignKey(PerevalAddModel, on_delete=models.CASCADE)
+    pereval = models.ForeignKey(PerevalAddModel, on_delete=models.CASCADE, related_name='images')
     date_added = models.DateTimeField(auto_now_add=True)
     image = models.BinaryField()
-    desc = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
 
     class Meta:
         db_table = 'pereval_images'
