@@ -11,5 +11,11 @@
 # About
 This is REST API for mobile application that FSTR commissioned SkillFactory students to develop that would make it easier for tourists to submit pass data and reduce the request processing time to three days.
 
+# Endpoints:
+### POST **`api/v1/perivals`**
+### GET/PATCH **`api/v1/perivals/id`**
+### GET **`api/v1/perivals/search/?user__email`**
+
 # [Swagger API Documentation](https://app.swaggerhub.com/apis/NIKZIPDEV_1/RESTAPI-Docs-FSTRapp/v1)
+### In app docs url **`api/v1/docs/`**
 
