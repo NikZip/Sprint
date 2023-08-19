@@ -35,8 +35,8 @@ class PerevalRepositoryDjango(PerevalRepositoryInterface):
     @staticmethod
     def _add_images(images_data, pereval) -> None:
         for image_data in images_data:
-            if type(image_data['data']) is bytes: # FIXME: When sending images though api it's needs to encode
-                data = image_data['data']  # for some reason, if working in local test, and dont need it
+            if type(image_data['data']) is bytes:  # Converting from str bcz of there is no binary field in serializers
+                data = image_data['data']
             else:
                 data = str.encode(image_data['data'])
 
@@ -77,7 +77,7 @@ class PerevalRepositoryDjango(PerevalRepositoryInterface):
         )
         self._add_images(pereval_data['images'], pereval)
 
-        return pereval.pk
+        return pereval
 
 
 

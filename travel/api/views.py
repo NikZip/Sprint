@@ -1,19 +1,39 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, CreateAPIView
 from rest_framework import status
-from .utils import PerevalRepositoryDjango
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from .exceptions import StatusIsNotNewException
 from .serializers import *
 from ..models import *
 
 
-class PassApiView(APIView):
-    def post(self, request):
+class PassCreateApiView(CreateAPIView):
+    """
+    Post pass data to create a new pass in db
+    return: status, message and id of created object
+    """
+    serializer_class = PerevalJsonPostSerializer
+
+    @swagger_auto_schema(
+        responses={
+            200: openapi.Response('Success', schema=openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={'status': openapi.Schema(type=openapi.TYPE_STRING),
+                            'id': openapi.Schema(type=openapi.TYPE_INTEGER)
+                            })),
+            'Fail': openapi.Response('Error', schema=openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={'status': openapi.Schema(type=openapi.TYPE_INTEGER),
+                            'message': openapi.Schema(type=openapi.TYPE_STRING)
+                            })),
+        })
+    def post(self, request, **kwargs):
         repository = PerevalRepositoryDjango()
         try:
-            pereval_id = repository.add_pereval(request.data)
-            return Response({'status': status.HTTP_200_OK, 'message': 'success', 'id': pereval_id})
+            pereval = repository.add_pereval(request.data)
+            return Response({'status': status.HTTP_200_OK, 'message': 'success', 'id': pereval.id})
         except KeyError as e:
             return Response({'status': status.HTTP_400_BAD_REQUEST, 'message': f'Key error, enter {e}'},
                             status=status.HTTP_400_BAD_REQUEST)
@@ -23,6 +43,20 @@ class PassApiView(APIView):
 
 
 class PassListQueryView(APIView):
+    """
+    Returns a list of passes that was created by user with entered email address
+    return: List['PerevalAddModel']
+    """
+    @swagger_auto_schema(manual_parameters=[
+        openapi.Parameter('user__email', openapi.IN_QUERY, description='Filter by email', type=openapi.TYPE_STRING),
+    ],
+        responses={
+            200: openapi.Response(description='Success', schema=openapi.Schema(
+                type=openapi.TYPE_ARRAY, items=openapi.Schema(
+                    type='List[Passes]'))),
+            404: openapi.Response(description='User not found'),
+        },
+    )
     def get(self, request):
         email = request.GET.get('user__email')
         try:
@@ -35,6 +69,12 @@ class PassListQueryView(APIView):
 
 
 class PassDetailApiView(RetrieveUpdateAPIView):
+    """
+    GET: Returns detailed information about pass
+    PATCH: Partial update for pass and it's dependencies
+    return: state with message
+    """
+    allowed_methods = ['GET', 'PATCH']
     queryset = PerevalAddModel.objects.all()
     serializer_class = PerevalAddSerializer
 
@@ -71,7 +111,8 @@ class PassDetailApiView(RetrieveUpdateAPIView):
 
             self._nested_serializer_partial_update('coords', request.data, CoordsSerializer, instance.coords)
             self._nested_serializer_partial_update('level', request.data, LevelSerializer, instance.level)
-            self._nested_serializer_partial_update_many('images', request.data, PerevalImageModel, PerevalImagesSerializer)
+            self._nested_serializer_partial_update_many('images', request.data, PerevalImageModel,
+                                                        PerevalImagesSerializer)
 
             self.perform_update(serializer)
 
@@ -79,6 +120,8 @@ class PassDetailApiView(RetrieveUpdateAPIView):
                 instance._prefetched_objects_cache = {}
 
             return Response({"state": 1, "message": "success"})
+        except KeyError as e:
+            return Response({"state": 0, 'message': f'Key error, enter {e}'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({"state": 0, "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 

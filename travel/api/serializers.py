@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from .utils import PerevalRepositoryDjango
 from ..models import *
 
 
@@ -55,4 +56,20 @@ class PerevalAddSerializer(serializers.ModelSerializer):
     def get_images(self, obj):
         images = obj.get_images()
         return PerevalImagesSerializer(images, many=True).data
+
+
+class ImagesJsonSerializer(serializers.Serializer):
+    data = serializers.CharField(label='encoded images bytes',)
+    title = serializers.CharField(label='title')
+
+
+class PerevalJsonPostSerializer(serializers.ModelSerializer):
+    user = PerevalUserSerializer()
+    coords = CoordsSerializer()
+    level = LevelSerializer()
+    images = ImagesJsonSerializer(many=True)
+
+    class Meta:
+        model = PerevalAddModel
+        fields = ['beauty_title', 'title', 'other_titles', 'connect', 'status', 'user', 'coords', 'level', 'images']
 
