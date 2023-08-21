@@ -1,0 +1,167 @@
+[
+{
+  "model": "travel.perevaladdmodel",
+  "pk": 1,
+  "fields": {
+    "beauty_title": "пер. ",
+    "title": "Pro",
+    "other_titles": "Триев",
+    "connect": "",
+    "status": "new",
+    "time_created": "2023-08-16T18:46:38.937Z",
+    "time_moderated": null,
+    "created_by": 1,
+    "coords": 1,
+    "level": 1
+  }
+},
+{
+  "model": "travel.perevaladdmodel",
+  "pk": 2,
+  "fields": {
+    "beauty_title": "пер. ",
+    "title": "Про",
+    "other_titles": "Три",
+    "connect": "",
+    "status": "new",
+    "time_created": "2023-08-16T19:39:09.326Z",
+    "time_moderated": null,
+    "created_by": 1,
+    "coords": 2,
+    "level": 2
+  }
+},
+{
+  "model": "travel.perevaladdmodel",
+  "pk": 3,
+  "fields": {
+    "beauty_title": "пер. ",
+    "title": "Прокова",
+    "other_titles": "Триев",
+    "connect": "",
+    "status": "new",
+    "time_created": "2023-08-17T15:30:56.129Z",
+    "time_moderated": null,
+    "created_by": 1,
+    "coords": 4,
+    "level": 3
+  }
+},
+{
+  "model": "travel.coordsmodel",
+  "pk": 1,
+  "fields": {
+    "latitude": "45.3842",
+    "longitude": "7.1525",
+    "height": "1200.0000"
+  }
+},
+{
+  "model": "travel.coordsmodel",
+  "pk": 2,
+  "fields": {
+    "latitude": "5.3842",
+    "longitude": "7.1525",
+    "height": "200.0000"
+  }
+},
+{
+  "model": "travel.coordsmodel",
+  "pk": 3,
+  "fields": {
+    "latitude": "45.3842",
+    "longitude": "7.1525",
+    "height": "1200.0000"
+  }
+},
+{
+  "model": "travel.coordsmodel",
+  "pk": 4,
+  "fields": {
+    "latitude": "45.3842",
+    "longitude": "7.1525",
+    "height": "1200.0000"
+  }
+},
+{
+  "model": "travel.perevallevelsmodel",
+  "pk": 1,
+  "fields": {
+    "winter": "",
+    "summer": "1А",
+    "autumn": "1А",
+    "spring": ""
+  }
+},
+{
+  "model": "travel.perevallevelsmodel",
+  "pk": 2,
+  "fields": {
+    "winter": "S",
+    "summer": "1S",
+    "autumn": "1S",
+    "spring": "S"
+  }
+},
+{
+  "model": "travel.perevallevelsmodel",
+  "pk": 3,
+  "fields": {
+    "winter": "",
+    "summer": "1A",
+    "autumn": "1A",
+    "spring": ""
+  }
+},
+{
+  "model": "travel.perevalimagemodel",
+  "pk": 1,
+  "fields": {
+    "pereval": 1,
+    "date_added": "2023-08-16T18:46:38.939Z",
+    "image": "54776f20f09f90ad20616e64206120f09f909820706c6179656420e29abdefb88f2e",
+    "title": "Седловина"
+  }
+},
+{
+  "model": "travel.perevalimagemodel",
+  "pk": 2,
+  "fields": {
+    "pereval": 1,
+    "date_added": "2023-08-16T18:46:38.939Z",
+    "image": "54776f20f09f90ad20616e64206120f09f909820706c6179656420e29abdefb88f2e",
+    "title": "Подъём"
+  }
+},
+{
+  "model": "travel.perevalimagemodel",
+  "pk": 3,
+  "fields": {
+    "pereval": 2,
+    "date_added": "2023-08-16T19:39:09.327Z",
+    "image": "54776f20f09f90ad20616e64206120f09f909820706c6179656420e29abdefb88f2e",
+    "title": "Седловина"
+  }
+},
+{
+  "model": "travel.perevalimagemodel",
+  "pk": 4,
+  "fields": {
+    "pereval": 2,
+    "date_added": "2023-08-16T19:39:09.327Z",
+    "image": "54776f20f09f90ad20616e64206120f09f909820706c6179656420e29abdefb88f2e",
+    "title": "Подъём"
+  }
+},
+{
+  "model": "travel.perevaluser",
+  "pk": 1,
+  "fields": {
+    "email": "qwerty@mail.ru",
+    "phone": "+7 555 55 55",
+    "fam": "Пупкин",
+    "name": "Василий",
+    "otc": "Иванович"
+  }
+}
+]

@@ -12,7 +12,7 @@ class PerevalAddModel(models.Model):
     beauty_title = models.CharField(max_length=50)
     title = models.CharField(max_length=50)
     other_titles = models.CharField(max_length=50)
-    connect = models.CharField(max_length=100)
+    connect = models.CharField(max_length=100, blank=True, null=True)
 
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='new')
     time_created = models.DateTimeField(auto_now_add=True)
@@ -48,10 +48,10 @@ class CoordsModel(models.Model):
 
 
 class PerevalLevelsModel(models.Model):
-    winter = models.CharField(max_length=10)
-    summer = models.CharField(max_length=10)
-    autumn = models.CharField(max_length=10)
-    spring = models.CharField(max_length=10)
+    winter = models.CharField(max_length=10, blank=True, null=True)
+    summer = models.CharField(max_length=10, blank=True, null=True)
+    autumn = models.CharField(max_length=10, blank=True, null=True)
+    spring = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         db_table = 'pereval_levels'

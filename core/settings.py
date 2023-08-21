@@ -33,6 +33,7 @@ DEFAULT_APPS = [
 ]
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'drf_yasg',
 ]
 
 LOCAL_APPS = [
@@ -54,8 +55,9 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'core.urls'
 
 REST_FRAMEWORK = {
-    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler'
+    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
 }
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

@@ -1,7 +1,18 @@
 import pytest
+import os
+from django import db
 from base64 import b64encode
 from rest_framework.test import APIClient
-from ..utils import PerevalRepositoryDjango
+from django.core.management import call_command
+
+current_file_path = os.path.abspath(__file__)
+current_dir_path = os.path.dirname(current_file_path)
+LOCAL_IMAGE_PATH = 'test_images'
+
+
+def get_absolute_path(path, name):
+    relative_path = os.path.join(path, name)
+    return os.path.join(current_dir_path, relative_path)
 
 
 def _get_encoded_image_encode(image_path):
@@ -12,10 +23,10 @@ def _get_encoded_image_encode(image_path):
     return encoded_image
 
 
-@pytest.fixture
-def populate_db(test_post_values):
-    repository = PerevalRepositoryDjango()
-    repository.add_pereval(test_post_values)
+@pytest.fixture(scope='session')
+def django_db_setup(django_db_setup, django_db_blocker):
+    with django_db_blocker.unblock():
+        call_command('loaddata', get_absolute_path("", 'db.json'))
 
 
 @pytest.fixture()
@@ -26,12 +37,12 @@ def api_client():
 
 @pytest.fixture
 def test_post_values():
-    encoded_lower_image = _get_encoded_image_encode("test_images/lower.jpg")
-    encoded_upper_image = _get_encoded_image_encode("test_images/upper.jpg")
+    encoded_lower_image = _get_encoded_image_encode(get_absolute_path(LOCAL_IMAGE_PATH, "lower.jpg"))
+    encoded_upper_image = _get_encoded_image_encode(get_absolute_path(LOCAL_IMAGE_PATH, "upper.jpg"))
 
     json_values = {
         "beauty_title": "пер. ",
-        "title": "Прокова",
+        "title": "Pro",
         "other_titles": "Триев",
         "connect": "",
         "user": {"email": "qwerty@mail.ru",
@@ -54,3 +65,33 @@ def test_post_values():
     }
     return json_values
 
+
+@pytest.fixture
+def test_post_values_wrong_types():
+    encoded_lower_image = _get_encoded_image_encode(get_absolute_path(LOCAL_IMAGE_PATH, "lower.jpg"))
+    encoded_upper_image = _get_encoded_image_encode(get_absolute_path(LOCAL_IMAGE_PATH, "upper.jpg"))
+
+    json_values = {
+        "beauty_title": "пер. ",
+        "title": "Pro",
+        "other_titles": "Триев",
+        "connect": "",
+        "user": {"email": "qwerty@mail.ru",
+                 "fam": "Пупкин",
+                 "name": "Василий",
+                 "otc": "Иванович",
+                 "phone": "+7 555 55 55"},
+        "coords": {
+            "latitude": "AWs",
+            "longitude": "aw",
+            "height": "awa"},
+
+        "level": {"winter": "",
+                  "summer": "1А",
+                  "autumn": "1А",
+                  "spring": ""},
+
+        "images": [{"data": encoded_upper_image, "title": "Седловина"},
+                   {"data": encoded_lower_image, "title": "Подъём"}]
+    }
+    return json_values
